@@ -11,7 +11,11 @@ jobs:
       # Checkout is necessary here due to referencing a local action.
       # It's also necessary when using the 'config-from-file' option.
       # Otherwise, avoid using checkout to keep this workflow fast.
-      - uses: actions/checkout@v2
+      - name: Check out repository
+        uses: actions/checkout@v2
+        with:
+          ref: ${{github.event.pull_request.head.ref}}
+          repository: ${{github.event.pull_request.head.repo.full_name}}
 
       # Advanced JSON configuration
       - name: Slash Command Dispatch (JSON)
