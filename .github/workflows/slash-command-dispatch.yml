@@ -1,108 +1,40 @@
-name: Slash Command Dispatch
+name: fix-pr-command
 on:
-  issue_comment:
-    # Type "edited" added here for test purposes. Where possible, avoid 
-    # using to prevent processing unnecessary events.
-    types: [created]
+  repository_dispatch:
+    types: [fix-pr-command]
 jobs:
-  slashCommandDispatch:
+  fixPr:
     runs-on: ubuntu-latest
     steps:
-      # Checkout is necessary here due to referencing a local action.
-      # It's also necessary when using the 'config-from-file' option.
-      # Otherwise, avoid using checkout to keep this workflow fast.
+      # Checkout the pull request branch
       - uses: actions/checkout@v2
-
-      # Advanced JSON configuration
-      - name: Slash Command Dispatch (JSON)
-        id: scd
-        uses: ./
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-          config: >
-            [
-              {
-                "command": "rebase",
-                "permission": "admin",
-                "repository": "peter-evans/slash-command-dispatch-processor",
-                "issue_type": "pull-request"
-              },
-              {
-                "command": "help",
-                "permission": "none",
-                "issue_type": "issue",
-                "repository": "peter-evans/slash-command-dispatch-processor"
-              },
-              {
-                "command": "help",
-                "permission": "none",
-                "issue_type": "pull-request",
-                "repository": "peter-evans/slash-command-dispatch-processor",
-                "event_type_suffix": "-pr-command"
-              },
-              {
-                "command": "example",
-                "permission": "none",
-                "issue_type": "issue",
-                "repository": "peter-evans/slash-command-dispatch-processor"
-              },
-              {
-                "command": "hello-world",
-                "permission": "none",
-                "issue_type": "issue",
-                "repository": "peter-evans/slash-command-dispatch-processor"
-              },
-              {
-                "command": "hello-world",
-                "permission": "none",
-                "issue_type": "pull-request",
-                "repository": "peter-evans/slash-command-dispatch-processor",
-                "event_type_suffix": "-pr-command"
-              },
-              {
-                "command": "hello-workflow",
-                "permission": "none",
-                "issue_type": "issue",
-                "repository": "peter-evans/slash-command-dispatch-processor",
-                "static_args": [
-                  "repository=${{ github.repository }}",
-                  "comment-id=${{ github.event.comment.id }}",
-                  "issue-number=${{ github.event.issue.number }}",
-                  "actor=${{ github.actor }}"
-                ],
-                "dispatch_type": "workflow"
-              },
-              {
-                "command": "ping",
-                "permission": "none",
-                "issue_type": "issue",
-                "repository": "peter-evans/slash-command-dispatch-processor"
-              },
-              {
-                "command": "black",
-                "permission": "none",
-                "issue_type": "pull-request",
-                "repository": "peter-evans/slash-command-dispatch-processor"
-              },
-              {
-                "command": "reset-demo",
-                "permission": "none",
-                "issue_type": "pull-request",
-                "repository": "peter-evans/slash-command-dispatch-processor"
-              }
-            ]
-      - name: Edit comment with error message
-        if: steps.scd.outputs.error-message
+          token: ${{ secrets.PAT }}
+          repository: ${{ github.event.client_payload.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.client_payload.pull_request.head.ref }}
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Install Black
+        run: pip install black
+      - name: Run black .
+        run: black .
+      
+      # Commit changes to the PR branch
+      - name: Commit changes to the PR branch
+        run: |
+          # Make changes to commit here
+          #
+          git config --global user.name 'actions-bot'
+          git config --global user.email '58130806+actions-bot@users.noreply.github.com'
+          git commit -am "[fix-pr-command] fixes"
+          git push
+
+      - name: Add reaction
         uses: peter-evans/create-or-update-comment@v1
         with:
-          comment-id: ${{ github.event.comment.id }}
-          body: |
-            > ${{ steps.scd.outputs.error-message }}
-      # Advanced JSON configuration from file
-      # (These commands do not do anything and are just a reference example)
-      - name: Slash Command Dispatch (JSON file)
-        uses: ./
-        with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-          reactions: false
-          config-from-file: .github/slash-command-dispatch.json
+          token: ${{ secrets.PAT }}
+          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
+          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          reaction-type: hooray
