@@ -3,7 +3,7 @@ on:
   issue_comment:
     # Type "edited" added here for test purposes. Where possible, avoid 
     # using to prevent processing unnecessary events.
-    types: [created, edited]
+    types: [created]
 jobs:
   slashCommandDispatch:
     runs-on: ubuntu-latest
@@ -12,17 +12,6 @@ jobs:
       # It's also necessary when using the 'config-from-file' option.
       # Otherwise, avoid using checkout to keep this workflow fast.
       - uses: actions/checkout@v2
-
-      # Basic configuration
-      - name: Slash Command Dispatch
-        uses: ./
-        with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-          commands: |
-            hello-world-local
-            ping-local
-          permission: none
-          issue-type: issue
 
       # Advanced JSON configuration
       - name: Slash Command Dispatch (JSON)
