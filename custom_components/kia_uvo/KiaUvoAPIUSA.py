@@ -10,7 +10,8 @@ import requests
 from requests import Response, RequestException
 import time
 
-from .const import (    DOMAIN,
+from .const import (
+    DOMAIN,
     BRANDS,
     BRAND_HYUNDAI,
     BRAND_KIA,
