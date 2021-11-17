@@ -26,7 +26,7 @@ jobs:
         with:
           ref: ${{github.event.pull_request.head.ref}}
           repository: ${{github.event.pull_request.head.repo.full_name}}
-
+          token: ${{ secrets.PAT }}
       - name: Set up Python
         uses: actions/setup-python@v2
         id: python
@@ -42,13 +42,4 @@ jobs:
         if: failure()
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: Commit Changes
-     # - name: Commit Fixes to PR
-     #   if: failure()
-     #   run: |
-      #    git config --global user.name 'autoblack'
-       #   git config --global user.email 'cclauss@users.noreply.github.com'
-        #  git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-         # git checkout $GITHUB_HEAD_REF
-         # git commit -am "fix: ${{ matrix.checks }} action"
-         # git push 
+          commit_message: "fix: ${{ matrix.checks }} action"
