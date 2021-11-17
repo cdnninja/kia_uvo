@@ -9,8 +9,7 @@ from urllib.parse import parse_qs, urlparse
 import uuid
 import time
 
-from .const import (
-    DOMAIN,
+from .const import (  DOMAIN,
     BRANDS,
     BRAND_HYUNDAI,
     BRAND_KIA,
