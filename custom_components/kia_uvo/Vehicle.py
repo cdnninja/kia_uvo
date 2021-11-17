@@ -127,7 +127,9 @@ class Vehicle:
         )
 
     async def refresh_token(self):
-        _LOGGER.debug(f"{DOMAIN} - Refresh token started {self.token.valid_until} {datetime.now()} {self.token.valid_until <= datetime.now().strftime(DATE_FORMAT)}")
+        _LOGGER.debug(
+            f"{DOMAIN} - Refresh token started {self.token.valid_until} {datetime.now()} {self.token.valid_until <= datetime.now().strftime(DATE_FORMAT)}"
+        )
         if self.token.valid_until <= datetime.now().strftime(DATE_FORMAT):
             _LOGGER.debug(f"{DOMAIN} - Refresh token expired")
             await self.hass.async_add_executor_job(self.login)
