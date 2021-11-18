@@ -65,11 +65,7 @@ class Vehicle:
 
             async_dispatcher_send(self.hass, self.topic_update)
         except Exception as ex:
-            _LOGGER.error(
-                f"{DOMAIN} - Exception in update : %s - traceback: %s",
-                ex,
-                traceback.format_exc(),
-            )
+            _LOGGER.error(f"{DOMAIN} - Exception in update : %s - traceback: %s", ex, traceback.format_exc(),)
 
     async def force_update(self):
         await self.hass.async_add_executor_job(
