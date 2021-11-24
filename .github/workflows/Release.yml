@@ -26,12 +26,14 @@ jobs:
           git tag ${{ steps.semantic_release_info.outputs.git_tag }}
           
       - name: Push changes
+        if: ${{steps.semantic_release_info.outputs.version != ''}}
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ github.token }}
           tags: true
 
       - name: Create GitHub Release
+        if: ${{steps.semantic_release_info.outputs.version != ''}}
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
