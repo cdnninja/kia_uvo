@@ -58,7 +58,6 @@ class KiaUvoApiCA(KiaUvoApiImpl):
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "same-origin",
-     
         }
 
     def login(self) -> Token:
