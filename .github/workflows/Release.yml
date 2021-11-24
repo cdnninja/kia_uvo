@@ -15,12 +15,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
       
-      - name: Commit files
-        run: |
+      - name: Update Version and Commit        
+      run: |
+          sed -E -i 's/(^\s*"version": ")(.*?)(",$)/\${{ steps.semantic_release_info.outputs.git_tag }}\3/' custom_components/kia_uvo/manifest.json
+
+          
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit -m "docs(): bumping release ${{ steps.semantic_release_info.outputs.git_tag }}"
+          git commit -m "docs(): bumping release c"
           git tag ${{ steps.semantic_release_info.outputs.git_tag }}
           
       - name: Push changes
