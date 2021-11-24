@@ -64,7 +64,7 @@ class KiaUvoApiCA(KiaUvoApiImpl):
     def login(self) -> Token:
         username = self.username
         password = self.password
-        test = "test"
+        test = "fix"
 
         ### Sign In with Email and Password and Get Authorization Code ###
 
