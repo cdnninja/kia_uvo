@@ -17,9 +17,7 @@ jobs:
       
       - name: Update Version and Commit        
       run: |
-          sed -E -i 's/(^\s*"version": ")(.*?)(",$)/\${{ steps.semantic_release_info.outputs.git_tag }}\3/' custom_components/kia_uvo/manifest.json
-
-          
+          sed -E -i "s/(^\s*"version": ")(.*?)(",$)/\${{ steps.semantic_release_info.outputs.git_tag }}\3/" custom_components/kia_uvo/manifest.json   
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
