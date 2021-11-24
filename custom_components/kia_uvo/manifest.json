@@ -5,7 +5,7 @@
   "issue_tracker": "https://github.com/fuatakgun/kia_uvo/issues",
   "codeowners": ["@fuatakgun"],
   "requirements": ["push_receiver==0.1.1", "curlify"],
-  "version": "0.0.2",
+  "version": "",
   "config_flow": true,
   "iot_class": "cloud_polling"
 }
