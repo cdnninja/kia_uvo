@@ -58,11 +58,13 @@ class KiaUvoApiCA(KiaUvoApiImpl):
             "sec-fetch-dest": "empty",
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "same-origin",
+     
         }
 
     def login(self) -> Token:
         username = self.username
         password = self.password
+        test = "test"
 
         ### Sign In with Email and Password and Get Authorization Code ###
 
